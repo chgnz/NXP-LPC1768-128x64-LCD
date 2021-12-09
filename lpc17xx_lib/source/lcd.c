@@ -1,6 +1,5 @@
 #include "lcd.h"
-//#include "stdio.h"
-#include "uart.h"
+
 	/*PORT 0*/
 	uint32_t E = ((uint32_t)1<<27); 		//P0.27
 	uint32_t BACKLIGHT = ((uint32_t)1<<28); //P0.28
@@ -244,7 +243,9 @@ xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx
 	if(byte_ & 0b01000000) GPIO_SetValue(1, D6);
 	if(byte_ & 0b10000000) GPIO_SetValue(1, D7);
 
-	//delay_us(10);
+	for (int var = 0; var < 0xfff; ++var) {
+		__NOP();
+	}
 
     GPIO_ClearValue(0, E);
 }
@@ -333,8 +334,6 @@ void lcd_putc(uint8_t xpos, char char_,uint8_t font_, _Bool space_)
 		{
 			for(i = 0; i < 3; i++)
 			{
-	        	UART_SendByte(DUT1, xpos);
-
 				if(xpos <= 63) side = LEFT_;
 				else if(xpos == 64) {lcd_write_byte(0,0, 0b01000000); side = RIGHT_;} // goto x = 0, side 2
 				else side = RIGHT_;
@@ -347,8 +346,6 @@ void lcd_putc(uint8_t xpos, char char_,uint8_t font_, _Bool space_)
 			{
 				for(i = 0; i < 5; i++)
 				{
-					UART_SendByte(DUT1, xpos);
-
 					if(xpos <= 63) side = LEFT_;
 					else if(xpos == 64) {lcd_write_byte(0,0, 0b01000000); side = RIGHT_;} // goto x = 0, side 2
 					else side = RIGHT_;
@@ -361,8 +358,6 @@ void lcd_putc(uint8_t xpos, char char_,uint8_t font_, _Bool space_)
 			{
 				for(i = 0; i < 5; i++)
 				{
-					UART_SendByte(DUT1, xpos);
-
 					if(xpos <= 63) side = LEFT_;
 					else if(xpos == 64) {lcd_write_byte(0,0, 0b01000000); side = RIGHT_;} // goto x = 0, side 2
 					else side = RIGHT_;

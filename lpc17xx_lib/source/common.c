@@ -35,7 +35,7 @@ void set_pin_function( uint8_t PORT_, uint8_t PIN_, uint8_t FUNC_)
  **********************************************************************/
 void output_toogle(uint8_t PORT_, uint32_t PIN_)
 {
-	if((GPIO_ReadValue(PORT_) & (uint32_t)1<<PIN_) >> PIN_) // ja pins iesleegts tad izsleedzam
+	if((GPIO_ReadValue(PORT_) & (uint32_t)(1<<PIN_)) == (1<<PIN_)) // ja pins iesleegts tad izsleedzam
 	{
 		GPIO_ClearValue((uint8_t)PORT_, (uint32_t)1<<PIN_);
 	}
@@ -78,7 +78,6 @@ for(delay_i=0xF; delay_i>0; delay_i--)
 
 //-------------------------------------------------------------------------------------------------
 /**
-	Apstādina izpildi uz norādīto laiku.
 
 	@param		us		laiks, us
 */
@@ -104,7 +103,7 @@ void MLIB_USleep(uint32_t us)
 	}
 
 	cycle2loop -= 100; 	// ciklu skaits ieejai & izejai
-	cycle2loop /= 4; 	// ciklu skaits iterācijā, 4 uz Cortex M0/M3
+	cycle2loop /= 4;
 
 	if (!cycle2loop)
 	{
@@ -130,7 +129,6 @@ void MLIB_USleep(uint32_t us)
 
 //-------------------------------------------------------------------------------------------------
 /**
-	Apstādina izpildi uz norādīto laiku.
 
 	@param		us		laiks, ms
 */
