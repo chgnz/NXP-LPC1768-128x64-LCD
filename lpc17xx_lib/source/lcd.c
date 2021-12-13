@@ -165,16 +165,16 @@
  *  RST_STATE_ = 0 - LCD IN NORMAL MODE
 **********************************************************************/
 void lcd_reset(_Bool RST_STATE_)
+{
+	if(RST_STATE_)
 	{
-		if(RST_STATE_)
-		{
-			GPIO_SetValue(0, RST);
-		}
-		else
-		{
-			GPIO_ClearValue(0, RST);
-		}
+		GPIO_SetValue(0, RST);
 	}
+	else
+	{
+		GPIO_ClearValue(0, RST);
+	}
+}
 
 
 
@@ -213,7 +213,6 @@ void lcd_write_byte(uint8_t lcd_half_, _Bool data, uint8_t byte_)
 		case 2: output_high(CS1_); output_low(CS2_); 	break;
 		default:output_low(CS1_); output_low(CS2_); 	break;
 	}
-	GPIO_SetValue(0, E);
 	GPIO_ClearValue(3, RW);
 
 	if(data)	//SET RS LOW/HIGH
@@ -243,7 +242,7 @@ xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx
 	if(byte_ & 0b01000000) GPIO_SetValue(1, D6);
 	if(byte_ & 0b10000000) GPIO_SetValue(1, D7);
 
-	for (int var = 0; var < 0xfff; ++var) {
+	for (int var = 0; var < 0xff; ++var) {
 		__NOP();
 	}
 
@@ -316,7 +315,7 @@ void lcd_clear_page(uint8_t page_start, uint8_t page_cnt, uint8_t x_start, uint8
 			if(i <= 63) side = LEFT_;
 			else if(i == 64) {lcd_write_byte(0,0, 0b01000000); side = RIGHT_;}
 			else side = RIGHT_;
-			lcd_write_byte(side,1,0x0);
+			lcd_write_byte(side,1,0xff);
 		}
 	}
 }
